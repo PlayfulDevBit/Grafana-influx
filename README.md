@@ -1,6 +1,8 @@
 # CPU Usage Monitoring with Python and Grafana in Google Colab
 
-This project demonstrates a simple, small, and effective way to monitor CPU usage using Python in Google Colab, store the data in InfluxDB Cloud, and visualize it in Grafana Cloud. 
+This project demonstrates a simple, small, and effective way to monitor CPU usage using Python in Google Colab, store the data in InfluxDB Cloud, and visualize it in Grafana Cloud.
+
+<img src="https://github.com/PlayfulDevBit/Grafana-influx/blob/main/Grafana.jpg" alt="Grafana" width="500" height="300">
 
 ## Features
 - Collects CPU usage data every 5 seconds using the `psutil` library.
@@ -33,8 +35,21 @@ This project demonstrates a simple, small, and effective way to monitor CPU usag
 
 ### 3. Run the Project in Google Colab
 1. Open [Google Colab](https://colab.research.google.com) and create a new notebook.
-2. Copy and paste the following code into separate cells.
-
-#### Install Dependencies
+2. Install Dependencies
 ```python
 !pip install psutil influxdb-client
+```
+3. Copy and paste the python code into separate cells.
+
+### 4. Visualize in Grafana
+* Create a new dashboard,  Navigate to Dashboards > New Dashboard.
+* Click Add a new panel.
+* Configure the panel: Select your InfluxDB data source from the Data source dropdown.
+* In the query editor, use the following Flux query to retrieve CPU usage data
+```
+from(bucket: "cpu_metrics")
+  |> range(start: -15m)
+  |> filter(fn: (r) => r._measurement == "system_metrics")
+  |> filter(fn: (r) => r._field == "cpu_usage")
+```
+
